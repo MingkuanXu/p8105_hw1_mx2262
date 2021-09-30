@@ -70,4 +70,29 @@ What happens, and why? Does this help explain what happens when you try to take 
 
 ### Problem 2
 
+Use the following code (in your RMarkdown file) to load the penguins dataset:
 
+```{r p2_load_data}
+data("penguins", package = "palmerpenguins")
+```
+
+Write a short description of the penguins dataset (not the penguins_raw dataset) using inline R code, including:
+- The data in this dataset, including names / values of important variables
+- The size of the dataset (using nrow and ncol)
+- The mean flipper length
+
+
+**This dataset describes the information of some penguins, including their `r names(penguins)`. Typical species includes `r unique(penguins$species)`. Typical islands found includes `r unique(penguins$island)`. The dataset has `r nrow(penguins)` rows and `r ncol(penguins)` columns. After removing all the NA valules, the mean flipper length is `r mean(penguins$flipper_length_mm,na.rm=TRUE)` mm.**
+
+Make a scatterplot of flipper_length_mm (y) vs bill_length_mm (x); color points using the species variable (adding color = ... inside of aes in your ggplot code should help).
+
+```{r p2_plot}
+ggplot(penguins,aes(x=bill_length_mm, y=flipper_length_mm,color=species))+
+    geom_point()+
+  labs(x="Bill Length (mm)",y="Flipper Length (mm)")
+```
+Export your first scatterplot to your project directory using ggsave.
+
+```{r p2_save_plot}
+ggsave(file="./output.pdf")
+```
