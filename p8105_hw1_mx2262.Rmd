@@ -1,1 +1,73 @@
-# P8105 - Homework 1
+---
+title: "P8105 - Homework 1"
+author: "Mingkuan Xu"
+output: html_document
+---
+
+### Problem 1
+
+Create a data frame comprised of:
+
+- a random sample of size 10 from a standard Normal distribution
+- a logical vector indicating whether elements of the sample are greater than 0
+- a character vector of length 10
+- a factor vector of length 10, with 3 different factor “levels”
+
+```{r p1_create}
+
+set.seed(124) # Set a random seed
+
+# Generate a random normal distributed sample of size 10
+sample <- rnorm(10)
+
+# Add the sample to a dataframe with column name random_values
+df <- data.frame(random_values = sample) 
+
+# Add a new column named is_positive indicating whether elements of the sample are greater than 0
+df$is_positive <- with(df,ifelse(random_values>0,TRUE,FALSE))
+
+# Create a character vector of length 10 and name it character_vector
+df$character_vector = vector("character", length = 10)
+
+# Create a factor vector with 3 different factor “levels”, and name it factor_vector
+df$factor_vector = factor(c(1,2,2,3,1,2,3,3,1,2))
+
+```
+
+Try to take the mean of each variable in your dataframe. What works and what doesn’t?
+
+Hint: to take the mean of a variable in a dataframe, you need to pull the variable out of the dataframe. Try loading the tidyverse and using the pull function.
+
+```{r p1_find_means}
+
+# We can use the pull function from tidyverse as instructed.
+
+library(tidyverse) # Load tidyverse library
+
+mean(pull(df,random_values)) # Find the mean of numeric vector
+mean(pull(df,is_positive)) # Find the mean of logical vector
+mean(pull(df,character_vector)) # Find the mean of character vector
+mean(pull(df,factor_vector)) # # Find the mean of factor vector
+```
+
+**By running the code, we could see it works for the numeric and logical vectors, but fails for the character and factor vectors.**
+
+In some cases, you can explicitly convert variables from one type to another. Write a code chunk that applies the as.numeric function to the logical, character, and factor variables (please show this chunk but not the output). 
+
+```{r p1_as_numeric,results = 'hide'}
+as.numeric(df$is_positive)
+as.numeric(df$character_vector)
+as.numeric(df$factor_vector)
+```
+What happens, and why? Does this help explain what happens when you try to take the mean?
+
+**For the logical vector, as.numeric transforms it to a vector with values 0 (for FALSE) or 1 (for TRUE), which explains how R is able to find the mean of this vector.**
+
+**For the character vector, as.numeric transforms it to multiple NAs. This also explains why there cannot be a "mean" value of character vecter, because characters cannot be automatically transformed into numbers in R.** 
+
+**For the factor vector, as.numeric does transform it to a numeric vector. However, we still cannot directly apply the mean functiion on a factor vector. From the warning message we seen above, "argument is not numeric or logical: returning NA", it looks like the mean value function only takes numeric or logical inputs.**
+
+
+### Problem 2
+
+
